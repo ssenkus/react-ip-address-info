@@ -1,0 +1,22 @@
+.App {
+
+}
+
+.App-header {
+  background-color: #f70;
+  padding: 20px;
+  color: #fff;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+
+main {
+  margin-top: 150px;
+}
