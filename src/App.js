@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import uuid from 'uuid';
 import './App.css';
-import NavBar from './NavBar';
-import IpAddressForm from './IpAddressForm';
+import NavBar from './components/NavBar';
+import IpAddressForm from './components/IpAddressForm';
 import IpAddressInfo from './models/IpAddressInfo';
 import 'whatwg-fetch';
 
