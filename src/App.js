@@ -3,6 +3,8 @@ import uuid from 'uuid';
 import './App.css';
 import NavBar from './NavBar';
 import IpAddressForm from './IpAddressForm';
+import IpAddressInfo from './models/IpAddressInfo';
+import 'whatwg-fetch';
 
 class App extends Component {
 
@@ -10,20 +12,7 @@ class App extends Component {
         super(props);
 
         this.state = {
-            locations: [
-                // {
-                //     key: uuid.v4(),
-                //     ipAddress: '1.2.3.4',
-                //     latitude: 12,
-                //     longitude: 22
-                // },
-                // {
-                //     key: uuid.v4(),
-                //     ipAddress: '5.6.7.8',
-                //     latitude: 33,
-                //     longitude: 1
-                // }
-            ]
+            locations: []
         };
 
 
@@ -45,16 +34,17 @@ class App extends Component {
             '84.45.22.12'
         ];
 
-
+        var self = this;
         validIpAddresses.forEach((ipAddress) => {
-            locations.push({
-                key: uuid.v4(),
-                ipAddress: ipAddress,
-                latitude: 0,
-                longitude: 0
-            });
+
+            fetch('http://localhost:8080/api/v1/ipaddress/' + ipAddress)
+                .then(resp => resp.json())
+                .then(resp => {
+                    console.log('resp', resp);
+                    locations.push(new IpAddressInfo(resp));
+                    self.setState({locations: locations});
+                });
         });
-        this.setState({locations: locations});
     }
 
 
@@ -62,7 +52,7 @@ class App extends Component {
         let locations = this.state.locations;
         location.key = uuid.v4();
         locations.push(location);
-        this.setState({ locations: locations});
+        this.setState({locations: locations});
     }
 
     render() {
@@ -70,7 +60,7 @@ class App extends Component {
         const listItems = this.state.locations.map((item) => {
             return (
                 <tr key={item.key}>
-                    <td>{item.ipAddress}</td>
+                    <td>{item.ip}</td>
                     <td>{item.latitude}</td>
                     <td>{item.longitude}</td>
                 </tr>
@@ -83,7 +73,7 @@ class App extends Component {
                 <main role="main" className="container">
                     <div className="container">
                         <IpAddressForm add={this.onAdd}/>
-                        <button onClick={this.addValidIpAddresses} >Add Valid IPs</button>
+                        <button onClick={this.addValidIpAddresses}>Add Valid IPs</button>
                         <table className="table">
                             <thead>
                             <tr>
