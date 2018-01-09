@@ -61,8 +61,11 @@ class App extends Component {
             return (
                 <tr key={item.key}>
                     <td>{item.ip}</td>
-                    <td>{item.latitude}</td>
-                    <td>{item.longitude}</td>
+                    <td>{item.city || '[City]'}, {item.region_code || '[Region Code]'} {item.zip_code || '[Zip Code]'}<br />
+                        {item.country_name} ({item.country_code})
+                    </td>
+                    <td>{item.latitude}, {item.longitude}</td>
+                    <td>ACTIONS</td>
                 </tr>
             )
         });
@@ -72,14 +75,18 @@ class App extends Component {
                 <NavBar/>
                 <main role="main" className="container">
                     <div className="container">
-                        <IpAddressForm add={this.onAdd}/>
-                        <button onClick={this.addValidIpAddresses}>Add Valid IPs</button>
-                        <table className="table">
-                            <thead>
+                        <div className="row">
+                            <IpAddressForm add={this.onAdd}/>
+                            <button id="add-valid-ips-button" className="btn btn-success" onClick={this.addValidIpAddresses}>Add Valid IPs
+                            </button>
+                        </div>
+                        <table className="table table-striped">
+                            <thead className="thead-dark">
                             <tr>
                                 <th>IP Address</th>
-                                <th>Latitude</th>
-                                <th>Longitude</th>
+                                <th>Location info</th>
+                                <th>Coordinates (Lat, Long)</th>
+                                <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>

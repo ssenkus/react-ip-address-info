@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import IpAddressInfo from '../models/IpAddressInfo';
+
 
 class IpAddressForm extends Component {
 
@@ -13,16 +15,19 @@ class IpAddressForm extends Component {
     }
 
     handleChange(event) {
-        this.setState({ ipAddress: event.target.value });
+        this.setState({ip: event.target.value});
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.add({
-            ip: this.state.ip,
-            latitude: 25,
-            longitude: 25
-        });
+
+        var self = this;
+
+        fetch('http://localhost:8080/api/v1/ipaddress/' + this.state.ip)
+            .then(resp => resp.json())
+            .then(resp => {
+                self.props.add(new IpAddressInfo(resp));
+            });
     }
 
     render() {
@@ -30,9 +35,9 @@ class IpAddressForm extends Component {
             <form className="ipAddressForm" onSubmit={this.handleSubmit}>
                 <label>
                     IP Address:
-                    <input type="text" value={this.state.ip} onChange={this.handleChange} />
+                    <input type="text" value={this.state.ip} onChange={this.handleChange}/>
                 </label>
-                <input type="submit" value="Submit" />
+                <input type="submit" value="Submit"/>
             </form>
         );
     }

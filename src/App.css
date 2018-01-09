@@ -3,20 +3,32 @@
 }
 
 .App-header {
-  background-color: #f70;
-  padding: 20px;
-  color: #fff;
+    background-color: #f70;
+    padding: 20px;
+    color: #fff;
 }
 
 .App-title {
-  font-size: 1.5em;
+    font-size: 1.5em;
 }
 
 .App-intro {
-  font-size: large;
+    font-size: large;
 }
 
-
 main {
-  margin-top: 150px;
+    margin-top: 150px;
+}
+
+#add-valid-ips-button {
+    margin-left: 25px;
+}
+
+.table {
+    margin-top: 25px;
+    font-size: 12px;
+}
+
+.table td {
+    padding: 0.25rem;
 }
