@@ -3,6 +3,7 @@ import uuid from 'uuid';
 import './App.css';
 import NavBar from './components/NavBar';
 import IpAddressForm from './components/IpAddressForm';
+import IpAddressInfoRow from './components/IpAddressInfoRow';
 import IpAddressInfo from './models/IpAddressInfo';
 import 'whatwg-fetch';
 
@@ -55,18 +56,18 @@ class App extends Component {
         this.setState({locations: locations});
     }
 
+    onDelete(location) {
+        let locations = this.state.locations;
+        let index = locations.indexOf(location);
+        locations.splice(index, 1);
+        this.setState({ locations: locations});
+    }
+
     render() {
 
         const listItems = this.state.locations.map((item) => {
             return (
-                <tr key={item.key}>
-                    <td>{item.ip}</td>
-                    <td>{item.city || '[City]'}, {item.region_code || '[Region Code]'} {item.zip_code || '[Zip Code]'}<br />
-                        {item.country_name} ({item.country_code})
-                    </td>
-                    <td>{item.latitude}, {item.longitude}</td>
-                    <td>ACTIONS</td>
-                </tr>
+                <IpAddressInfoRow key={item.key}  item={item} delete={this.onDelete.bind(this, item)} />
             )
         });
 
