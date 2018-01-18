@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "IP Info App",
+  "name": "IP Info App with React.js",
   "icons": [
     {
       "src": "favicon.ico",

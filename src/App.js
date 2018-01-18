@@ -7,6 +7,18 @@ import IpAddressInfoRow from './components/IpAddressInfoRow';
 import IpAddressInfo from './models/IpAddressInfo';
 import 'whatwg-fetch';
 
+
+import {
+
+    ComposableMap,
+    ZoomableGroup,
+    Geographies,
+    Geography,
+    Markers,
+    Marker
+} from "react-simple-maps"
+
+
 class App extends Component {
 
     constructor(props) {
@@ -19,6 +31,8 @@ class App extends Component {
 
         this.onAdd = this.onAdd.bind(this);
         this.addValidIpAddresses = this.addValidIpAddresses.bind(this);
+
+
     }
 
     addValidIpAddresses() {
@@ -60,16 +74,32 @@ class App extends Component {
         let locations = this.state.locations;
         let index = locations.indexOf(location);
         locations.splice(index, 1);
-        this.setState({ locations: locations});
+        this.setState({locations: locations});
     }
 
     render() {
 
         const listItems = this.state.locations.map((item) => {
             return (
-                <IpAddressInfoRow key={item.key}  item={item} delete={this.onDelete.bind(this, item)} />
+                <IpAddressInfoRow key={item.key} item={item} delete={this.onDelete.bind(this, item)}/>
             )
         });
+
+
+        const markers = this.state.locations.map((item) => {
+            return (
+                <Marker
+                    marker={{coordinates: [ item.longitude,item.latitude]}}
+                    style={{
+                        default: {fill: 'rgb(40, 167, 69)'},
+                        hover: {fill: "#ff0"},
+                        pressed: {fill: "#007"},
+                    }}>
+                    <circle cx={ 0 } cy={ 0 } r={ 2 }/>
+                </Marker>
+            );
+        });
+
 
         return (
             <div className="App">
@@ -77,8 +107,36 @@ class App extends Component {
                 <main role="main" className="container">
                     <div className="container">
                         <div className="row">
+                            <div>
+                                <ComposableMap>
+                                    <ZoomableGroup>
+                                        <Geographies
+                                            geography={ "https://raw.githubusercontent.com/d3/d3.github.com/master/world-110m.v1.json" }>
+                                            {(geographies, projection) => geographies.map(geography => (
+                                                <Geography
+                                                    style={{
+                                                        default: {fill: "#000"},
+                                                        hover: {fill: "#900"},
+                                                        pressed: {fill: "#ccc"},
+                                                    }}
+                                                    key={ geography.id }
+                                                    geography={ geography }
+                                                    projection={ projection }
+                                                />
+                                            ))}
+                                        </Geographies>
+                                        <Markers>
+                                            {markers}
+                                        </Markers>
+                                    </ZoomableGroup>
+
+                                </ComposableMap>
+                            </div>
+                        </div>
+                        <div className="row">
                             <IpAddressForm add={this.onAdd}/>
-                            <button id="add-valid-ips-button" className="btn btn-success" onClick={this.addValidIpAddresses}>Add Valid IPs
+                            <button id="add-valid-ips-button" className="btn btn-success"
+                                    onClick={this.addValidIpAddresses}>Add Valid IPs
                             </button>
                         </div>
                         <table className="table table-striped">
